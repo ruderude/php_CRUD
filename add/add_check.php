@@ -1,11 +1,6 @@
 <?php
     // エラーを出力する
     ini_set('display_errors', "On");
-    ini_set('mbstring.internal_encoding' , 'utf8mb4_general_ci');
-
-    // $name = shape($_POST["name"]);
-    // $age = shape($_POST["age"]);
-    // $job = shape($_POST["job"]);
 
     $name = trim(mb_convert_kana($_POST["name"], "s", 'UTF-8'));
     $age = trim(mb_convert_kana($_POST["age"], "s", 'UTF-8'));

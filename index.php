@@ -1,17 +1,19 @@
 <?php
 // エラーを出力する
 ini_set('display_errors', "On");
-ini_set('mbstring.internal_encoding' , 'utf8mb4_general_ci');
-require_once('function/database.php');
 
 try {
 
-    $dbh = db();
+    $dsn = 'mysql:host=127.0.0.1;dbname=test_db;charset=utf8mb4';
+    $user = 'admin';
+    $password = 'password';
+
+    $dbh = new PDO($dsn, $user, $password);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     $sql = "SELECT id, name FROM users";
 
     $stmt = $dbh->query($sql);
-    $stmt->execute();
 
     $members = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
@@ -24,8 +26,8 @@ try {
     exit;
 }
 
-
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>

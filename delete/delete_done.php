@@ -1,5 +1,5 @@
 <?php
-    require_once('../function/database.php');
+    // require_once('../function/database.php');
 
     try {
         $id = trim(mb_convert_kana($_POST["id"], "s", 'UTF-8'));
@@ -8,7 +8,12 @@
         $id = htmlspecialchars($id, ENT_QUOTES, 'UTF-8');
         $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
 
-        $dbh = db();
+        $dsn = 'mysql:host=127.0.0.1;dbname=test_db;charset=utf8mb4';
+        $user = 'admin';
+        $password = 'password';
+
+        $dbh = new PDO($dsn, $user, $password);
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = "DELETE FROM users WHERE id = :id";
 

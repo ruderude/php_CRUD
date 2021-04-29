@@ -1,5 +1,5 @@
 <?php
-    require_once('../function/database.php');
+    // require_once('../function/database.php');
 
     try {
         $id = trim(mb_convert_kana($_POST["id"], "s", 'UTF-8'));
@@ -16,7 +16,12 @@
 
         // var_dump($created_at);
 
-        $dbh = db();
+        $dsn = 'mysql:host=127.0.0.1;dbname=test_db;charset=utf8mb4';
+        $user = 'admin';
+        $password = 'password';
+
+        $dbh = new PDO($dsn, $user, $password);
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = "UPDATE users SET name = :name, age = :age, job = :job, updated_at = :updated_at WHERE id = :id";
 

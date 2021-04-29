@@ -1,9 +1,8 @@
 <?php
     // エラーを出力する
     ini_set('display_errors', "On");
-    ini_set('mbstring.internal_encoding' , 'utf8mb4_general_ci');
-    require_once('../function/database.php');
-    require_once('../function/function.php');
+    // require_once('../function/database.php');
+    // require_once('../function/function.php');
 
     try {
 
@@ -11,14 +10,19 @@
         $age = trim(mb_convert_kana($_POST["age"], "s", 'UTF-8'));
         $job = trim(mb_convert_kana($_POST["job"], "s", 'UTF-8'));
 
-        $name = h($name);
-        $age = h($age);
-        $job = h($job);
+        $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+        $age = htmlspecialchars($age, ENT_QUOTES, 'UTF-8');
+        $job = htmlspecialchars($job, ENT_QUOTES, 'UTF-8');
 
         $created_at = date("Y/m/d H:i:s");
         $updated_at = date("Y/m/d H:i:s");
 
-        $dbh = db();
+        $dsn = 'mysql:host=127.0.0.1;dbname=test_db;charset=utf8mb4';
+        $user = 'admin';
+        $password = 'password';
+
+        $dbh = new PDO($dsn, $user, $password);
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = "INSERT INTO users (name, age, job, created_at, updated_at) VALUES (:name, :age, :job, :created_at, :updated_at)";
 

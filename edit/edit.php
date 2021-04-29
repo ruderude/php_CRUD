@@ -1,16 +1,20 @@
 <?php
 // エラーを出力する
 ini_set('display_errors', "On");
-ini_set('mbstring.internal_encoding' , 'utf8mb4_general_ci');
 
-require_once('../function/database.php');
+// require_once('../function/database.php');
 
 $id = trim(mb_convert_kana($_GET["id"], "s", 'UTF-8'));
 $id = htmlspecialchars($id, ENT_QUOTES, 'UTF-8');
 
 
 try {
-    $dbh = db();
+    $dsn = 'mysql:host=127.0.0.1;dbname=test_db;charset=utf8mb4';
+    $user = 'admin';
+    $password = 'password';
+
+    $dbh = new PDO($dsn, $user, $password);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     $sql = "SELECT * FROM users WHERE id = :id";
 
