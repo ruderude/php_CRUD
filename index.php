@@ -40,6 +40,7 @@ try {
     <ul>
         <?php foreach ($members as $key => $member) : ?>
             <li style="display:flex;">
+                <!-- エスケープしなくて良い？ -->
                 <?= $member['name'] ?>
                 <a href="./show/show.php?id=<?= $member['id'] ?>"><button>詳細</button></a>
                 <a href="./edit/edit.php?id=<?= $member['id'] ?>"><button>編集</button></a>
