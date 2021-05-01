@@ -4,31 +4,36 @@ ini_set('display_errors', "On");
 require_once('../function/db.php');
 require_once('../function/function.php');
 
-$id = shape($_GET["id"]);
-$id = h($id);
+if(isset($_GET['id']) && !empty($_GET['id'])) {
+    $id = shape($_GET["id"]);
+    $id = h($id);
 
-
-try {
-    $dbh = db();
+    try {
+        $dbh = db();
     
-    $sql = "SELECT * FROM users WHERE id = :id";
+        $sql = "SELECT * FROM users WHERE id = :id";
 
-    $stmt = $dbh->prepare($sql);
+        $stmt = $dbh->prepare($sql);
+        
+        //クエリの設定
+        $stmt->bindValue(':id', $id);
+
+        //クエリの実行
+        $stmt->execute();
+
+        $member = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $dbh = null;
     
-    //クエリの設定
-    $stmt->bindValue(':id', $id);
-
-    //クエリの実行
-    $stmt->execute();
-
-    $member = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    $dbh = null;
-
-} catch (PDOException $e) {
-    // 本番ではヒントになるエラー文は表示しない
-    $error_message =  "障害発生によりご迷惑をおかけしています。: " . $e->getMessage() . "\n";
-    echo $error_message;
+    } catch (PDOException $e) {
+        // 本番ではヒントになるエラー文は表示しない
+        $error_message =  "障害発生によりご迷惑をおかけしています。: " . $e->getMessage() . "\n";
+        echo $error_message;
+        exit;
+    }
+} else {
+    $url = '../index.php';
+    header('Location: ' . $url, true, 301);
     exit;
 }
 

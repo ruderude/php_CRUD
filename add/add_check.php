@@ -3,17 +3,17 @@
     ini_set('display_errors', "On");
     require_once('../function/function.php');
 
-    if(isset($_POST)) {
-        // $name = trim(mb_convert_kana($_POST["name"], "s", 'UTF-8'));
-        $name = shape($_POST["name"]);
-        $age = shape($_POST["age"]);
-        $job = shape($_POST["job"]);
 
-        // $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-        $name = h($name);
-        $age = h($age);
-        $job = h($job);
-    }
+    // $name = trim(mb_convert_kana($_POST["name"], "s", 'UTF-8'));
+    $name = shape($_POST["name"]);
+    $age = shape($_POST["age"]);
+    $job = shape($_POST["job"]);
+
+    // $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+    $name = h($name);
+    $age = h($age);
+    $job = h($job);
+
     
 
     $error_messages = [];
