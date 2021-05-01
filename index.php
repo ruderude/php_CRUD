@@ -1,15 +1,11 @@
 <?php
 // エラーを出力する
 ini_set('display_errors', "On");
+require_once('function/db.php');
 
 try {
 
-    $dsn = 'mysql:host=127.0.0.1;dbname=test_db;charset=utf8mb4';
-    $user = 'admin';
-    $password = 'password';
-
-    $dbh = new PDO($dsn, $user, $password);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbh = db();
     
     $sql = "SELECT id, name FROM users";
 

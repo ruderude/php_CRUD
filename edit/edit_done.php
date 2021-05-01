@@ -1,27 +1,21 @@
 <?php
-    // require_once('../function/database.php');
+    require_once('../function/db.php');
+    require_once('../function/function.php');
 
     try {
-        $id = trim(mb_convert_kana($_POST["id"], "s", 'UTF-8'));
-        $name = trim(mb_convert_kana($_POST["name"], "s", 'UTF-8'));
-        $age = trim(mb_convert_kana($_POST["age"], "s", 'UTF-8'));
-        $job = trim(mb_convert_kana($_POST["job"], "s", 'UTF-8'));
+        $id = shape($_POST["id"]);
+        $name = shape($_POST["name"]);
+        $age = shape($_POST["age"]);
+        $job = shape($_POST["job"]);
         
-        $id = htmlspecialchars($id, ENT_QUOTES, 'UTF-8');
-        $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-        $age = htmlspecialchars($age, ENT_QUOTES, 'UTF-8');
-        $job = htmlspecialchars($job, ENT_QUOTES, 'UTF-8');
+        $id = h($id);
+        $name = h($name);
+        $age = h($age);
+        $job = h($job);
 
         $updated_at = date("Y/m/d H:i:s");
 
-        // var_dump($created_at);
-
-        $dsn = 'mysql:host=127.0.0.1;dbname=test_db;charset=utf8mb4';
-        $user = 'admin';
-        $password = 'password';
-
-        $dbh = new PDO($dsn, $user, $password);
-        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $dbh = db();
 
         $sql = "UPDATE users SET name = :name, age = :age, job = :job, updated_at = :updated_at WHERE id = :id";
 

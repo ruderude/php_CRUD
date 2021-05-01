@@ -1,14 +1,19 @@
 <?php
+    // エラーを出力する
+    ini_set('display_errors', "On");
+    require_once('../function/db.php');
+    require_once('../function/function.php');
 
-    $id = trim(mb_convert_kana($_POST["id"], "s", 'UTF-8'));
-    $name = trim(mb_convert_kana($_POST["name"], "s", 'UTF-8'));
-    $age = trim(mb_convert_kana($_POST["age"], "s", 'UTF-8'));
-    $job = trim(mb_convert_kana($_POST["job"], "s", 'UTF-8'));
 
-    $id = htmlspecialchars($id, ENT_QUOTES, 'UTF-8');
-    $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-    $age = htmlspecialchars($age, ENT_QUOTES, 'UTF-8');
-    $job = htmlspecialchars($job, ENT_QUOTES, 'UTF-8');
+    $id = shape($_POST["id"]);
+    $name = shape($_POST["name"]);
+    $age = shape($_POST["age"]);
+    $job = shape($_POST["job"]);
+
+    $id = h($id);
+    $name = h($name);
+    $age = h($age);
+    $job = h($job);
 
     $error_messages = [];
 
