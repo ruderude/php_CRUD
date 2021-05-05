@@ -8,14 +8,14 @@
 </head>
 <body>
     <h3>新規登録</h3>
-    <form method="POST" action="add_check.php">
+    <form method="POST" action="add_check.php" enctype="multipart/form-data">
         名前を入力してください。<br>
         <input type="text" name="name" value="" style="width:200px"><br>
         年齢を入力してください。 <br>
         <input type="text" name="age" style="width:100px"><br>
         仕事を入力してください。 <br>
         <input type="text" name="job" style="width:100px"><br>
-        <br>
+        ファイル:<br><input type="file" name="up_file"><br>
         <input type="button" onclick="history.back()" value="戻る">
         <input type="submit" value="送信">
     </form>

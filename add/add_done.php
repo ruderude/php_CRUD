@@ -1,47 +1,75 @@
 <?php
-    // エラーを出力する
-    ini_set('display_errors', "On");
     require_once('../function/db.php');
     require_once('../function/function.php');
 
+    $name = isset($_POST["name"]) ? shape($_POST["name"]) : "";
+    $age = isset($_POST["age"]) ? shape($_POST["age"]) : "";
+    $job = isset($_POST["job"]) ? shape($_POST["job"]) : "";
+    $image_name = isset($_POST["image_name"]) ? shape($_POST["image_name"]) : "";
+
     try {
+        // 画像がある場合とない場合
+        if($image_name) {
+            echo "画像あり";
+            $created_at = date("Y/m/d H:i:s");
+            $updated_at = date("Y/m/d H:i:s");
 
-        $name = shape($_POST["name"]);
-        $age = shape($_POST["age"]);
-        $job = shape($_POST["job"]);
+            $dbh = db();
+            $sql = "INSERT INTO users (name, age, job, image_name, created_at, updated_at) VALUES (:name, :age, :job, :image_name, :created_at, :updated_at)";
+            $stmt = $dbh->prepare($sql);
 
-        $name = h($name);
-        $age = h($age);
-        $job = h($job);
+            //クエリの設定
+            $stmt->bindValue(':name', $name);
+            $stmt->bindValue(':age', $age);
+            $stmt->bindValue(':job', $job);
+            $stmt->bindValue(':image_name', $image_name);
+            $stmt->bindValue(':created_at', $created_at);
+            $stmt->bindValue(':updated_at', $updated_at);
 
-        $created_at = date("Y/m/d H:i:s");
-        $updated_at = date("Y/m/d H:i:s");
+            //クエリの実行
+            $stmt->execute();
 
-        $dbh = db();
+            $dbh = null;
 
-        $sql = "INSERT INTO users (name, age, job, created_at, updated_at) VALUES (:name, :age, :job, :created_at, :updated_at)";
+            // ファイル保存
+            if(rename("../images/tmp/".$image_name, "../images/".$image_name)){
+                // ファイルのパーミッションを確実に0644に設定する
+                chmod("../images/" . $image_name, 0644);
+                //正常
+                echo "uploaded";
+            }else{
+                //コピーに失敗（だいたい、ディレクトリがないか、パーミッションエラー）
+                echo "error while saving.";
+            }
 
-        $stmt = $dbh->prepare($sql);
+            $message = $name . "さんを追加しました。<br>";
+        } else {
+            echo "画像なし";
+            $created_at = date("Y/m/d H:i:s");
+            $updated_at = date("Y/m/d H:i:s");
 
-        //クエリの設定
-        $stmt->bindValue(':name', $name);
-        $stmt->bindValue(':age', $age);
-        $stmt->bindValue(':job', $job);
-        $stmt->bindValue(':created_at', $created_at);
-        $stmt->bindValue(':updated_at', $updated_at);
+            $dbh = db();
+            $sql = "INSERT INTO users (name, age, job, created_at, updated_at) VALUES (:name, :age, :job, :created_at, :updated_at)";
+            $stmt = $dbh->prepare($sql);
 
-        //クエリの実行
-        $stmt->execute();
+            //クエリの設定
+            $stmt->bindValue(':name', $name);
+            $stmt->bindValue(':age', $age);
+            $stmt->bindValue(':job', $job);
+            $stmt->bindValue(':created_at', $created_at);
+            $stmt->bindValue(':updated_at', $updated_at);
 
-        $dbh = null;
+            //クエリの実行
+            $stmt->execute();
 
-        $message = $name . "さんを追加しました。<br>";
+            $dbh = null;
+
+            $message = $name . "さんを追加しました。<br>";
+        }
 
     } catch (PDOException $e) {
         // 本番ではヒントになるエラー文は表示しない
         $error_message =  "障害発生によりご迷惑をおかけしています。: " . $e->getMessage() . "\n";
-        echo $error_message;
-        exit;
     }
 
 ?>
@@ -57,10 +85,11 @@
 <body>
     <?php if (!isset($error_message)) :?>
         <h2>スタッフ追加完了!</h2>
-        <div><?= $message ?></div>
+        <div><?= h($message) ?></div>
+        <img src="../images/tmp/<?= h($image_name) ?>" alt="">
         <a href="../index.php"><button>戻る</button></a>
     <?php else: ?>
-        <p style="color:tomato"><?= $error_message ?></p>
+        <p style="color:tomato"><?= h($error_message) ?></p>
         <a href="../index.php"><button>戻る</button></a>
 　　<?php endif; ?>
 

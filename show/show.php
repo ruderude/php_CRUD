@@ -1,6 +1,4 @@
 <?php
-// エラーを出力する
-ini_set('display_errors', "On");
 require_once('../function/db.php');
 require_once('../function/function.php');
 
@@ -62,6 +60,10 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
         </li>
         <li>
         仕事：<?= $member['job'] ?>
+        </li>
+        <li>
+        イメージ：<br>
+        <img src="../images/<?= $member['image_name'] ?>" alt="">
         </li>
     </ul>
     <a href="../index.php"><button>戻る</button></a>
