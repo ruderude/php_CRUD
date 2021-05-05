@@ -45,7 +45,7 @@ if($id) {
 <body>
     <h3>スタッフ編集</h3>
     <?php if (empty($error_message)) :?>
-        <form method="POST" action="edit_check.php">
+        <form method="POST" action="edit_check.php" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?= h($member['id']) ?>" >
             名前を入力してください。<br>
             <input type="text" name="name" value="<?= h($member['name']) ?>" style="width:200px"><br>
@@ -56,6 +56,7 @@ if($id) {
             ファイル:<br><input type="file" name="up_file"><br>
             現在のイメージ：<br>
             <img src="../images/<?= h($member['image_name']) ?>" alt="">
+            <input type="hidden" name="image_name" value="<?= h($member['image_name']) ?>"><br>
             <input type="button" onclick="history.back()" value="戻る">
             <input type="submit" value="送信">
         </form>

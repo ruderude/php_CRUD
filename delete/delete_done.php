@@ -27,7 +27,6 @@
                 unlink("../images/".$image_name);
             }
         }
-        
 
         $message = $name . "さんを削除しました。<br>";
 

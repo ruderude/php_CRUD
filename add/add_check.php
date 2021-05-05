@@ -122,7 +122,7 @@
         </ul>
         <img src="../images/tmp/<?= $originalFileName ?>" alt="">
 
-        <form method="post" action="add_done.php">
+        <form method="post" action="add_done.php" enctype="multipart/form-data">
             <input type="hidden" name="name" value="<?= h($name) ?>">
             <input type="hidden" name="age" value="<?= h($age) ?>">
             <input type="hidden" name="job" value="<?= h($job) ?>">

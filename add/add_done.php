@@ -10,7 +10,7 @@
     try {
         // 画像がある場合とない場合
         if($image_name) {
-            echo "画像あり";
+            // echo "画像あり";
             $created_at = date("Y/m/d H:i:s");
             $updated_at = date("Y/m/d H:i:s");
 
@@ -44,7 +44,7 @@
 
             $message = $name . "さんを追加しました。<br>";
         } else {
-            echo "画像なし";
+            // echo "画像なし";
             $created_at = date("Y/m/d H:i:s");
             $updated_at = date("Y/m/d H:i:s");
 
