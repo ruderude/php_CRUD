@@ -1,20 +1,16 @@
 <?php
-    // エラーを出力する
-    ini_set('display_errors', "On");
     require_once('../function/db.php');
     require_once('../function/function.php');
 
+    $id = isset($_POST["id"]) ? shape($_POST["id"]) : "";
+    $name = isset($_POST["name"]) ? shape($_POST["name"]) : "";
+
+    $error_message;
+
     try {
-        $id = shape($_POST["id"]);
-        $name = shape($_POST["name"]);
-        
-        $id = h($id);
-        $name = h($name);
 
         $dbh = db();
-
         $sql = "DELETE FROM users WHERE id = :id";
-
         $stmt = $dbh->prepare($sql);
 
         //クエリの設定
@@ -30,8 +26,6 @@
     } catch (PDOException $e) {
         // 本番ではヒントになるエラー文は表示しない
         $error_message =  "障害発生によりご迷惑をおかけしています。: " . $e->getMessage() . "\n";
-        echo $error_message;
-        exit;
     }
 
 ?>
@@ -47,7 +41,7 @@
 <body>
     <?php if (!isset($error_message)) :?>
         <h2>スタッフ削除完了!</h2>
-        <div><?= $message ?></div>
+        <div><?= h($message) ?></div>
         <a href="../index.php"><button>戻る</button></a>
     <?php else: ?>
         <p style="color:tomato"><?= $error_message ?></p>

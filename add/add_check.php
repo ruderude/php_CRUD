@@ -1,20 +1,9 @@
 <?php
-    // エラーを出力する
-    ini_set('display_errors', "On");
     require_once('../function/function.php');
 
-
-    // $name = trim(mb_convert_kana($_POST["name"], "s", 'UTF-8'));
-    $name = shape($_POST["name"]);
-    $age = shape($_POST["age"]);
-    $job = shape($_POST["job"]);
-
-    // $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-    $name = h($name);
-    $age = h($age);
-    $job = h($job);
-
-    
+    $name = isset($_POST["name"]) ? shape($_POST["name"]) : "";
+    $age = isset($_POST["age"]) ? shape($_POST["age"]) : "";
+    $job = isset($_POST["job"]) ? shape($_POST["job"]) : "";
 
     $error_messages = [];
 
@@ -26,7 +15,9 @@
 
     if($age == "") {
         $error_messages[] = "年齢を入力してください";
-    } elseif($age > 200) {
+    }elseif (!preg_match("/^[0-9]+$/",$age)) {
+        $error_messages[] = "数値を入力してください";
+    } elseif ($age > 200) {
         $error_messages[] = "生きていません";
     }
 
@@ -35,9 +26,6 @@
     } elseif(mb_strlen($job) > 30) {
         $error_messages[] = "仕事名が長すぎます（30文字以下にしてください）";
     }
-
-
-
 
     ?>
 
@@ -54,21 +42,21 @@
     <?php if (empty($error_messages)) :?>
         <h4>こちらの内容でよろしいですか？</h4>
         <ul>
-            <li><?= $name ?></li>
-            <li><?= $age ?>歳</li>
-            <li><?= $job ?></li>
+            <li><?= h($name) ?></li>
+            <li><?= h($age) ?>歳</li>
+            <li><?= h($job) ?></li>
         </ul>
 
         <form method="post" action="add_done.php">
-            <input type="hidden" name="name" value="<?= $name ?>">
-            <input type="hidden" name="age" value="<?= $age ?>">
-            <input type="hidden" name="job" value="<?= $job ?>">
+            <input type="hidden" name="name" value="<?= h($name) ?>">
+            <input type="hidden" name="age" value="<?= h($age) ?>">
+            <input type="hidden" name="job" value="<?= h($job) ?>">
             <input type="button" onclick="history.back()" value="戻る">
             <input type="submit" value="OK">
         </form>
 　　<?php else: ?>
         <?php foreach ($error_messages as $error) : ?>
-            <div style="color:tomato"><?= $error ?></div>
+            <div style="color:tomato"><?= h($error) ?></div>
         <?php endforeach; ?>
         <input type="button" onclick="history.back()" value="戻る">
 　　<?php endif; ?>

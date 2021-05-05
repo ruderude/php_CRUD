@@ -1,19 +1,15 @@
 <?php
-// エラーを出力する
-ini_set('display_errors', "On");
 require_once('../function/db.php');
 require_once('../function/function.php');
 
+$id = isset($_GET["id"]) ? shape($_GET["id"]) : "";
+$error_message;
 
-if(isset($_GET['id']) && !empty($_GET['id'])) {
-    $id = shape($_GET["id"]);
-    $id = h($id);
+if($id) {
 
     try {
         $dbh = db();
-    
         $sql = "SELECT * FROM users WHERE id = :id";
-
         $stmt = $dbh->prepare($sql);
         
         //クエリの設定
@@ -29,15 +25,12 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
     } catch (PDOException $e) {
         // 本番ではヒントになるエラー文は表示しない
         $error_message =  "障害発生によりご迷惑をおかけしています。: " . $e->getMessage() . "\n";
-        echo $error_message;
-        exit;
     }
 } else {
     $url = '../index.php';
     header('Location: ' . $url, true, 301);
     exit;
 }
-
 
 ?>
 
@@ -51,17 +44,22 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
 </head>
 <body>
     <h3>スタッフ編集</h3>
-    <form method="POST" action="edit_check.php">
-        <input type="hidden" name="id" value="<?= $member['id'] ?>" >
-        名前を入力してください。<br>
-        <input type="text" name="name" value="<?= $member['name'] ?>" style="width:200px"><br>
-        年齢を入力してください。 <br>
-        <input type="text" name="age" value="<?= $member['age'] ?>" style="width:100px"><br>
-        仕事を入力してください。 <br>
-        <input type="text" name="job" value="<?= $member['job'] ?>" style="width:100px"><br>
-        <br>
+    <?php if (empty($error_message)) :?>
+        <form method="POST" action="edit_check.php" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<?= h($member['id']) ?>" >
+            名前を入力してください。<br>
+            <input type="text" name="name" value="<?= h($member['name']) ?>" style="width:200px"><br>
+            年齢を入力してください。 <br>
+            <input type="text" name="age" value="<?= h($member['age']) ?>" style="width:100px"><br>
+            仕事を入力してください。 <br>
+            <input type="text" name="job" value="<?= h($member['job']) ?>" style="width:100px"><br>
+            <input type="button" onclick="history.back()" value="戻る">
+            <input type="submit" value="送信">
+        </form>
+　　<?php else: ?>
+        <div style="color:tomato"><?= h($error_message) ?></div>
         <input type="button" onclick="history.back()" value="戻る">
-        <input type="submit" value="送信">
-    </form>
+　　<?php endif; ?>
+    
 </body>
 </html>

@@ -1,26 +1,18 @@
 <?php
-    // エラーを出力する
-    ini_set('display_errors', "On");
     require_once('../function/db.php');
     require_once('../function/function.php');
 
+    $name = isset($_POST["name"]) ? shape($_POST["name"]) : "";
+    $age = isset($_POST["age"]) ? shape($_POST["age"]) : "";
+    $job = isset($_POST["job"]) ? shape($_POST["job"]) : "";
+
     try {
-
-        $name = shape($_POST["name"]);
-        $age = shape($_POST["age"]);
-        $job = shape($_POST["job"]);
-
-        $name = h($name);
-        $age = h($age);
-        $job = h($job);
 
         $created_at = date("Y/m/d H:i:s");
         $updated_at = date("Y/m/d H:i:s");
 
         $dbh = db();
-
         $sql = "INSERT INTO users (name, age, job, created_at, updated_at) VALUES (:name, :age, :job, :created_at, :updated_at)";
-
         $stmt = $dbh->prepare($sql);
 
         //クエリの設定

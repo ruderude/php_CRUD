@@ -2,16 +2,12 @@
     require_once('../function/db.php');
     require_once('../function/function.php');
 
+    $id = isset($_POST["id"]) ? shape($_POST["id"]) : "";
+    $name = isset($_POST["name"]) ? shape($_POST["name"]) : "";
+    $age = isset($_POST["age"]) ? shape($_POST["age"]) : "";
+    $job = isset($_POST["job"]) ? shape($_POST["job"]) : "";
+
     try {
-        $id = shape($_POST["id"]);
-        $name = shape($_POST["name"]);
-        $age = shape($_POST["age"]);
-        $job = shape($_POST["job"]);
-        
-        $id = h($id);
-        $name = h($name);
-        $age = h($age);
-        $job = h($job);
 
         $updated_at = date("Y/m/d H:i:s");
 
@@ -38,8 +34,6 @@
     } catch (PDOException $e) {
         // 本番ではヒントになるエラー文は表示しない
         $error_message =  "障害発生によりご迷惑をおかけしています。: " . $e->getMessage() . "\n";
-        echo $error_message;
-        exit;
     }
 
 ?>
@@ -61,6 +55,5 @@
         <p style="color:tomato"><?= $error_message ?></p>
         <a href="../index.php"><button>戻る</button></a>
 　　<?php endif; ?>
-
 </body>
 </html>
