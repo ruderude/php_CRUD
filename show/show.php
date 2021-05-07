@@ -62,7 +62,7 @@ if($id) {
             仕事：<?= h($member['job']) ?>
             </li>
         </ul>
-        <form method="POST" action="delete_done.php">
+        <form method="GET" action="../delete/delete.php">
             <input type="hidden" name="id" value="<?= h($id) ?>">
             <input type="hidden" name="name" value="<?= h($member['name']) ?>">
             <input type="button" onclick="history.back()" value="戻る">
