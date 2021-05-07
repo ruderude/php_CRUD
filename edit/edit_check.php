@@ -91,13 +91,15 @@
                 }else{
                     //コピーに失敗（だいたい、ディレクトリがないか、パーミッションエラー）
                     $originalFileName = "";
+                    // throw new Exception('ファイルがアップロードできませんでした');
                     echo "error while saving.";
                 }
         
             }else{
                 //そもそもファイルが来ていない。
                 $originalFileName = "";
-                echo "file not uploaded.";
+                // throw new Exception('ファイルがアップロードできませんでした');
+                echo "no file.";
         
             }
 

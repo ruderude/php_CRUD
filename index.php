@@ -1,6 +1,4 @@
 <?php
-// エラーを出力する
-ini_set('display_errors', "On");
 require_once('function/db.php');
 
 try {
